@@ -1,4 +1,5 @@
 const cloudinary = require("cloudinary").v2;
+const url = require("url");
 
 //config
 cloudinary.config({
@@ -22,11 +23,25 @@ const singleImageUpload = (image) => {
         console.log(result.secure_url);
         return resolve(result.secure_url);
       }
-      console.log(error.message);
-      return reject({ message: error.message });
+      console.log("hi from image upload!!");
+      return reject({ message: "hi from image upload!!" });
     });
   });
 };
 
+const removeImage = (image) => {
+  const parsedUrl = url.parse(image);
 
-module.exports = { singleImageUpload };
+  // Extract the public ID from the path
+  const pathParts = parsedUrl.pathname.split("/");
+  const publicId = pathParts[pathParts.length - 1].split(".")[0];
+  cloudinary.uploader.destroy(publicId, (error, result) => {
+    if (error) {
+      console.error("Error deleting image:", error);
+    } else {
+      console.log("Image deleted successfully:", result);
+    }
+  });
+};
+
+module.exports = { singleImageUpload, removeImage };

@@ -10,6 +10,9 @@ const Clues = sequelize.define("clues", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  clue_no: {
+    type: DataTypes.INTEGER,
+  },
   answer: {
     type: DataTypes.STRING,
     allowNull: false,
